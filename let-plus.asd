@@ -1,6 +1,4 @@
-;;;; let-plus.asd
-
-(asdf:defsystem #:let-plus
+(defsystem "let-plus"
   :description "Destructuring extension of LET*."
   :author "Tamas K. Papp <tkpapp@gmail.com>."
   :maintainer "Sharp Lispers <sharplispers@googlegroups.com>"
@@ -10,22 +8,18 @@
   :components ((:file "package")
                (:file "let-plus")
                (:file "extensions"))
-  :depends-on (#:alexandria
-               #:anaphora))
+  :depends-on ("alexandria"
+               "anaphora")
+  :in-order-to ((test-op (test-op "let-plus/tests"))))
 
-(defmethod perform ((op test-op) (sys (eql (find-system '#:let-plus))))
-  (operate 'test-op '#:let-plus/tests))
-
-(asdf:defsystem #:let-plus/tests
+(defsystem "let-plus/tests"
   :description "Tests for the LET-PLUS library."
   :author "Tamas K. Papp <tkpapp@gmail.com>."
   :maintainer "Sharp Lispers <sharplispers@googlegroups.com>"
   :license "Same as LET-PLUS -- this is part of the latter."
   :serial t
   :components ((:file "tests"))
-  :depends-on (#:lift
-               #:let-plus))
-
-(defmethod perform ((op test-op) (sys (eql (find-system '#:let-plus/tests))))
-  (operate 'load-op '#:let-plus/tests)
-  (funcall (find-symbol (string '#:run) '#:let-plus-tests)))
+  :depends-on ("lift"
+               "let-plus")
+  :perform (test-op (operation component)
+             (uiop:symbol-call '#:let-plus-tests '#:run)))
