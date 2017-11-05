@@ -3,6 +3,7 @@
 (asdf:defsystem #:let-plus
   :description "Destructuring extension of LET*."
   :author "Tamas K. Papp <tkpapp@gmail.com>."
+  :maintainer "Sharp Lispers <sharplispers@googlegroups.com>"
   :license "Boost Software License - Version 1.0"
   :version "0.2"
   :serial t
@@ -18,6 +19,7 @@
 (asdf:defsystem #:let-plus-tests
   :description "Tests for the LET-PLUS library."
   :author "Tamas K. Papp <tkpapp@gmail.com>."
+  :maintainer "Sharp Lispers <sharplispers@googlegroups.com>"
   :license "Same as LET-PLUS -- this is part of the latter."
   :serial t
   :components ((:file "tests"))
