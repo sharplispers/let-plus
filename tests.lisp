@@ -92,13 +92,17 @@ should)."
     (ensure-same b 4)
     (ensure-same c 3)))
 
+(declaim (notinline two-element-vector))
+(defun two-element-vector ()
+  #(1 2))
+
 (addtest (let-plus-tests)
   test-array
   (let+ ((#2A((a &ign) (b c)) #2A((1 2) (3 4))))
     (ensure-same a 1)
     (ensure-same b 3)
     (ensure-same c 4))
-  (ensure-error (let+ ((#(a b c) #(1 2))))))
+  (ensure-error (let+ ((#(a b c) (two-element-vector))))))
 
 (addtest (let-plus-tests)
   test-array-elements
