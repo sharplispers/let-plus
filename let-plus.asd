@@ -14,9 +14,9 @@
                #:anaphora))
 
 (defmethod perform ((op test-op) (sys (eql (find-system '#:let-plus))))
-  (operate 'test-op '#:let-plus-tests))
+  (operate 'test-op '#:let-plus/tests))
 
-(asdf:defsystem #:let-plus-tests
+(asdf:defsystem #:let-plus/tests
   :description "Tests for the LET-PLUS library."
   :author "Tamas K. Papp <tkpapp@gmail.com>."
   :maintainer "Sharp Lispers <sharplispers@googlegroups.com>"
@@ -26,6 +26,6 @@
   :depends-on (#:lift
                #:let-plus))
 
-(defmethod perform ((op test-op) (sys (eql (find-system '#:let-plus-tests))))
-  (operate 'load-op '#:let-plus-tests)
+(defmethod perform ((op test-op) (sys (eql (find-system '#:let-plus/tests))))
+  (operate 'load-op '#:let-plus/tests)
   (funcall (find-symbol (string '#:run) '#:let-plus-tests)))
