@@ -1,5 +1,4 @@
-;;; -*- Mode:Lisp; Syntax:ANSI-Common-Lisp; Coding:utf-8 -*-
-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-Lisp; Package: LET-PLUS -*-
 (in-package #:let-plus)
 
 (defun destructured-lambda-list-forms (lambda-list body)

@@ -1,4 +1,4 @@
-;;; -*- Mode:Lisp; Syntax:ANSI-Common-Lisp; Coding:utf-8 -*-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-Lisp; Package: CL-USER -*-
 
 (defpackage #:let-plus-tests
   (:use #:cl #:alexandria #:lift #:let-plus)
