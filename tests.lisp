@@ -257,4 +257,19 @@ should)."
   (ensure (let+ ((() '())) t))
   (ensure-error (let+ ((() '(1)))))
   ;; (ensure-error (let+ ((() 1))))
-)
+  )
+
+(defun bar ()
+  10)
+
+(addtest (let-plus-tests)
+  test-dont-splice-labels
+  (ensure-same (let+ (((&labels foo () (bar))))
+                 (labels ((bar () 5))
+                   (bar))
+                 (foo))
+               10)
+  (ensure-same (let+ (((&labels foo () (bar))))
+                 (labels ((bar () 5))
+                   (foo)))
+               10))

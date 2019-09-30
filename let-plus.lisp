@@ -95,6 +95,11 @@ NOTE: It is unlikely that you need to used this function, see the note above its
 
 (defmacro let+ (bindings &body body)
   "Destructuring bindings.  See the documentation of the LET-PLUS library.  Most accepted forms start with &."
+  (if (and (null (rest body))
+           (consp (first body))
+           (eq (car (first body)) 'labels))
+      ;; This hack avoids a LABELS form to be joined with some &LABELS in BINDINGS
+      (setf body `((locally ,@body))))
   (labels ((expand (bindings)
              (destructuring-bind (binding &rest other-bindings) bindings
                (destructuring-bind (form &optional value)
