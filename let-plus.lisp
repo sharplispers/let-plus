@@ -71,7 +71,7 @@ NOTE: It is unlikely that you need to used this function, see the note above its
        ,@body))
   (:method ((variable symbol) value body)
     (cond
-      ((ignored? variable) `(progn ,@body))
+      ((ignored? variable) `(locally ,@body))
       ((&-symbol? variable)
        (warn "Possibly left out one level of nesting in LET+ form (~A ~A)."
              variable value))
@@ -109,7 +109,7 @@ NOTE: It is unlikely that you need to used this function, see the note above its
                                                  body))))))
     (if bindings
         (expand bindings)
-        `(progn ,@body))))
+        `(locally ,@body))))
 
 (defmacro define-let+-expansion ((name arguments &key
                                        (value-var 'value)

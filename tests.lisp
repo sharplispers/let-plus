@@ -273,3 +273,10 @@ should)."
                  (labels ((bar () 5))
                    (foo)))
                10))
+
+(addtest (let-plus-tests)
+  test-empty-let+-with-declaration
+  (ensure-same (let+ ()
+                 (declare (optimize speed))
+                 t)
+               t))
