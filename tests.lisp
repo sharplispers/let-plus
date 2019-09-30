@@ -258,3 +258,14 @@ should)."
   (ensure-error (let+ ((() '(1)))))
   ;; (ensure-error (let+ ((() 1))))
 )
+
+(addtest (let-plus-tests)
+  test-empty-let+-with-declaration
+  (ensure-same (let+ ()
+                 (declare (optimize speed))
+                 t)
+               t)
+  (ensure-same (let+ ((&ign 1))
+                 (declare (optimize speed))
+                 t)
+               t))
