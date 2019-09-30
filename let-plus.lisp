@@ -282,12 +282,13 @@ NOTE: It is unlikely that you need to used this function, see the note above its
                                                &body function-body)
                            :uses-value? nil)
   "LET+ form for function definitions.  Expands into an LABELS, thus allowing recursive functions."
-  (if (typep (first body) '(cons (eql cl:labels)))
+  (if (and (null (rest body))
+           ;; otherwise, the rest of BODY would be wrongly put inside LABELS scope
+           (typep (first body) '(cons (eql cl:labels))))
       (destructuring-bind (bindings &rest first-body) (rest (first body))
         `(labels ((,function-name ,lambda-list ,@function-body)
                   ,@bindings)
-           ,@first-body
-           ,@(rest body)))
+           ,@first-body))
       `(labels ((,function-name ,lambda-list ,@function-body))
          ,@body)))
 
