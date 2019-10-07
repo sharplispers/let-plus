@@ -95,11 +95,6 @@ NOTE: It is unlikely that you need to used this function, see the note above its
 
 (defmacro let+ (bindings &body body)
   "Destructuring bindings.  See the documentation of the LET-PLUS library.  Most accepted forms start with &."
-  (if (and (null (rest body))
-           (consp (first body))
-           (eq (car (first body)) 'labels))
-      ;; This hack avoids a LABELS form to be joined with some &LABELS in BINDINGS
-      (setf body `((locally ,@body))))
   (labels ((expand (bindings)
              (destructuring-bind (binding &rest other-bindings) bindings
                (destructuring-bind (form &optional value)
@@ -283,18 +278,21 @@ NOTE: It is unlikely that you need to used this function, see the note above its
   `(flet ((,function-name ,lambda-list ,@function-body))
      ,@body))
 
+(defmacro mergeable-labels (bindings &body body)
+  `(labels ,bindings ,@body))
+
 (define-let+-expansion (&labels (function-name lambda-list
                                                &body function-body)
                            :uses-value? nil)
   "LET+ form for function definitions.  Expands into an LABELS, thus allowing recursive functions."
   (if (and (null (rest body))
            ;; otherwise, the rest of BODY would be wrongly put inside LABELS scope
-           (typep (first body) '(cons (eql cl:labels))))
+           (typep (first body) '(cons (eql mergeable-labels))))
       (destructuring-bind (bindings &rest first-body) (rest (first body))
-        `(labels ((,function-name ,lambda-list ,@function-body)
-                  ,@bindings)
+        `(mergeable-labels ((,function-name ,lambda-list ,@function-body)
+                            ,@bindings)
            ,@first-body))
-      `(labels ((,function-name ,lambda-list ,@function-body))
+      `(mergeable-labels ((,function-name ,lambda-list ,@function-body))
          ,@body)))
 
 (define-let+-expansion (&macrolet (macro-name lambda-list  &body macro-body)
