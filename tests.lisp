@@ -146,6 +146,25 @@ should)."
     (ensure-same (my-odd?  5) t)
     (ensure-same (my-even? 5) nil)))
 
+(defun labels-test-function ()
+  10)
+
+(addtest (let-plus-tests)
+  test-labels/dont-splice
+  (ensure-same (let+ (((&labels foo () (labels-test-function))))
+                 (labels ((labels-test-function () 5))
+                   (labels-test-function))
+                 (foo))
+               10)
+  (ensure-same (let+ (((&labels foo () (labels-test-function))))
+                 (labels ((labels-test-function () 5))
+                   (values (foo) (labels-test-function))))
+               (values 10 5))
+  (ensure-same (let+ (((&labels foo () (labels-test-function))))
+                 (let+ (((&labels labels-test-function () 5)))
+                   (values (foo) (labels-test-function))))
+               (values 10 5)))
+
 (addtest (let-plus-tests)
   test-plist
   (test-r/o-and-r/w (list 'a 1 :b 2 'c '3)

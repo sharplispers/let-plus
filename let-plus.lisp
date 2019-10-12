@@ -278,17 +278,21 @@ NOTE: It is unlikely that you need to used this function, see the note above its
   `(flet ((,function-name ,lambda-list ,@function-body))
      ,@body))
 
+(defmacro mergable-labels (bindings &body body)
+  `(labels ,bindings ,@body))
+
 (define-let+-expansion (&labels (function-name lambda-list
                                                &body function-body)
-                           :uses-value? nil)
+                                :uses-value? nil)
   "LET+ form for function definitions.  Expands into an LABELS, thus allowing recursive functions."
-  (if (typep (first body) '(cons (eql cl:labels)))
+  (if (typep (first body) '(cons (eql mergable-labels)))
       (destructuring-bind (bindings &rest first-body) (rest (first body))
-        `(labels ((,function-name ,lambda-list ,@function-body)
-                  ,@bindings)
+        (assert (null (rest body)))
+        `(mergable-labels ((,function-name ,lambda-list ,@function-body)
+                           ,@bindings)
            ,@first-body
            ,@(rest body)))
-      `(labels ((,function-name ,lambda-list ,@function-body))
+      `(mergable-labels ((,function-name ,lambda-list ,@function-body))
          ,@body)))
 
 (define-let+-expansion (&macrolet (macro-name lambda-list  &body macro-body)
