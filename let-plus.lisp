@@ -1,5 +1,4 @@
-;;;; let-plus.lisp
-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-Lisp; Package: LET-PLUS -*-
 (in-package #:let-plus)
 
 ;;; LET+ recognizes three general kinds of syntax for accessing elements in

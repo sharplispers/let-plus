@@ -1,4 +1,4 @@
-;;;; package.lisp
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-Lisp; Package: CL-USER -*-
 
 (defpackage #:let-plus
   (:use #:cl #:alexandria #:anaphora)
